@@ -1326,7 +1326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionRadius: 2.5
-  _enemyLayer:
+  _entityLayer:
     serializedVersion: 2
     m_Bits: 64
   radiusUI: {fileID: 611687864}
@@ -1345,7 +1345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionRadius: 1
-  _enemyLayer:
+  _entityLayer:
     serializedVersion: 2
     m_Bits: 64
   radiusUI: {fileID: 227719506}

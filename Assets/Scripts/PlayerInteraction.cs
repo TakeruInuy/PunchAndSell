@@ -4,7 +4,7 @@ public abstract class PlayerInteraction : MonoBehaviour
 {
 
     [SerializeField] protected float _actionRadius = 5f;
-    [SerializeField] protected LayerMask _enemyLayer;
+    [SerializeField] protected LayerMask _entityLayer;
     [SerializeField] protected Transform radiusUI;
     [SerializeField] protected float _UIScaleMultiplier = 1;
 
@@ -13,21 +13,21 @@ public abstract class PlayerInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckForEnemy();
+        CheckForEntity();
     }
 
-    protected void CheckForEnemy()
+    protected void CheckForEntity()
     {
-        var enemiesHit = Physics.OverlapSphere(transform.position, _actionRadius, _enemyLayer);
+        var entitiesHit = Physics.OverlapSphere(transform.position, _actionRadius, _entityLayer);
 
-        foreach (var enemy in enemiesHit)
+        foreach (var entity in entitiesHit)
         {
-            var enemyComponent = enemy.GetComponent<Enemy>();
-            DoAction(enemyComponent);
+            var entityComponent = entity.GetComponent<Entity>();
+            DoAction(entityComponent);
         }
     }
 
-    protected abstract void DoAction(Enemy enemy);
+    protected abstract void DoAction(Entity entity);
 
 
     protected virtual void OnValidate()

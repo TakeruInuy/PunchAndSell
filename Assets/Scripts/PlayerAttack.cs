@@ -1,7 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerAttack : PlayerEnemyInteraction
+public class PlayerAttack : PlayerInteraction
 {
 
     [SerializeField] private int _attackDamage = 1;

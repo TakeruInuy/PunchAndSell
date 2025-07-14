@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class PlayerEnemyInteraction : MonoBehaviour
+public abstract class PlayerInteraction : MonoBehaviour
 {
 
     [SerializeField] protected float _actionRadius = 5f;

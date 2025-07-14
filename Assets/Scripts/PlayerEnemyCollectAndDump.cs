@@ -2,7 +2,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerEnemyCollectAndDump : PlayerEnemyInteraction
+public class PlayerEnemyCollectAndDump : PlayerInteraction
 {
 
     private List<Enemy> enemiesCollected;

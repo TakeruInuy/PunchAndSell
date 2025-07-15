@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class PlayerInteraction : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public abstract class PlayerInteraction : MonoBehaviour
     [SerializeField] protected LayerMask _entityLayer;
     [SerializeField] protected Transform radiusUI;
     [SerializeField] protected float _UIScaleMultiplier = 1;
+    public UnityEvent onAction;
 
 
 
@@ -27,7 +29,10 @@ public abstract class PlayerInteraction : MonoBehaviour
         }
     }
 
-    protected abstract void DoAction(Entity entity);
+    protected virtual void DoAction(Entity entity)
+    {
+        onAction.Invoke();
+    }
 
 
     protected virtual void OnValidate()
@@ -47,6 +52,4 @@ public abstract class PlayerInteraction : MonoBehaviour
         
         Gizmos.DrawSphere(transform.position, _actionRadius);
     }
-
-
 }

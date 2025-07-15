@@ -6,7 +6,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class PlayerEnemyCollect : PlayerInteraction
 {
 
-    private List<Enemy> enemiesCollected;
+    public List<Enemy> enemiesCollected;
 
     [Header("Enemy Collection Attributes")]
     [SerializeField] private float enemyOnBackDepthOffset = 1f;
@@ -22,11 +22,10 @@ public class PlayerEnemyCollect : PlayerInteraction
     }
 
     protected override void DoAction(Entity entity)
-    {
+    {        
         Enemy enemy = (Enemy)entity;
         if(enemy && enemiesCollected.Count < maxEnemiesCapacity && !enemiesCollected.Contains(enemy) && enemy.isDead) 
         {
-
             enemy.transform.parent = transform;
             enemiesCollected.Add(enemy);
             for (int i = 0; i < enemiesCollected.Count; i++)
@@ -34,6 +33,17 @@ public class PlayerEnemyCollect : PlayerInteraction
                 var newPos = new Vector3(0, enemyOnBackHeightOffset * i, -enemyOnBackDepthOffset);
                 enemiesCollected[i].transform.localPosition = newPos;
             }
+            base.DoAction(entity);
         }       
+    }
+
+    public void ClearEnemies()
+    {
+        foreach (var enemy in enemiesCollected)
+        {
+            enemy.transform.parent = null;
+            enemy.gameObject.SetActive(false);
+        }
+        enemiesCollected.Clear();
     }
 }

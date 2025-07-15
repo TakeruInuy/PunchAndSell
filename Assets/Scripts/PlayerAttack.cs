@@ -10,9 +10,14 @@ public class PlayerAttack : PlayerInteraction
 
     protected override void DoAction(Entity entity)
     {
+        
         Enemy enemy = (Enemy)entity;
         if (enemy)
+        {
             enemy.TakeDamage(_attackDamage);
+            base.DoAction(entity);
+        }
+            
 
     }
 

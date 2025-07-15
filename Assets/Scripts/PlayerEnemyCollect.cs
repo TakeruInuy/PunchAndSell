@@ -11,8 +11,8 @@ public class PlayerEnemyCollect : PlayerInteraction
     [Header("Enemy Collection Attributes")]
     [SerializeField] private float enemyOnBackDepthOffset = 1f;
     [SerializeField] private float enemyOnBackHeightOffset = 1f;
-    [SerializeField] public int startingEnemiesCollectedCapacity = 2;
-    private int maxEnemiesCapacity;
+    [SerializeField] private int startingEnemiesCollectedCapacity = 2;
+    [HideInInspector] public int maxEnemiesCapacity;
 
 
     private void Start()
@@ -44,6 +44,10 @@ public class PlayerEnemyCollect : PlayerInteraction
             enemy.transform.parent = null;
             enemy.gameObject.SetActive(false);
         }
+        int enemiesCleared = enemiesCollected.Count;
+        ResourceManager.Instance.AddResource(enemiesCleared);
         enemiesCollected.Clear();
+
+        
     }
 }

@@ -42,7 +42,5 @@ public class ResourceManager : MonoBehaviour
     {
         resource = Mathf.Clamp(resource, 0, maxResource);
         resourceUI.text = resource.ToString();
-        Debug.Log("Resource: " + resource);
     }
-
 }

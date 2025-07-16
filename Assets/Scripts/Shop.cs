@@ -2,12 +2,17 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
     
     private Dictionary<string, ShopItem> shopItems;
-    [SerializeField] private MeshRenderer playerMesh;
+    [SerializeField] private MeshRenderer _playerMesh;
+
+    [Header("UI")]
+    [SerializeField] private RectTransform _shopPanel;
+    [SerializeField] private ShopButton _shopButtonTemplate;
 
     private void Awake()
     {
@@ -18,10 +23,12 @@ public class Shop : MonoBehaviour
             foreach (var item in itemsToStore)
             {
                 shopItems.Add(item.itemName, item);
-                Debug.Log(item.itemName + " added");
+                var button = Instantiate(_shopButtonTemplate, _shopPanel.transform);
+                button.itemButtonImage.sprite = item.icon;
+                button.itemButtonText.text = item.itemName;
+                button.itemButton.onClick.AddListener(() => ButtonClick(item.itemName));
             }
-        } else Debug.Log("No items found");
-       
+        } else Debug.LogWarning("No shop items found");       
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -63,6 +70,6 @@ public class Shop : MonoBehaviour
 
     private void EquipItem(string item)
     {
-        playerMesh.material = shopItems[item].material;
+        _playerMesh.material = shopItems[item].material;
     }
 }

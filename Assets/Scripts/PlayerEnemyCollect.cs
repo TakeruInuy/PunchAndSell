@@ -46,8 +46,6 @@ public class PlayerEnemyCollect : PlayerInteraction
         }
         int enemiesCleared = enemiesCollected.Count;
         ResourceManager.Instance.AddResource(enemiesCleared);
-        enemiesCollected.Clear();
-
-        
+        enemiesCollected.Clear();        
     }
 }

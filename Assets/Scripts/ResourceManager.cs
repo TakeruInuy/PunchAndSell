@@ -6,9 +6,9 @@ public class ResourceManager : MonoBehaviour
 {
     public static ResourceManager Instance;
 
-    [SerializeField] private TextMeshProUGUI resourceUI;
+    [SerializeField] private TextMeshProUGUI _resourceUI;
     public int resource;
-    [SerializeField] private int maxResource  = 999999;
+    [SerializeField] private int _maxResource  = 999999;
 
     public UnityEvent onValueChange = new UnityEvent();
 
@@ -22,7 +22,7 @@ public class ResourceManager : MonoBehaviour
 
     private void Start()
     {
-        resourceUI.text = "0";
+        _resourceUI.text = "0";
         onValueChange.AddListener(LimitResource);
     }
 
@@ -40,7 +40,7 @@ public class ResourceManager : MonoBehaviour
 
     public void LimitResource()
     {
-        resource = Mathf.Clamp(resource, 0, maxResource);
-        resourceUI.text = resource.ToString();
+        resource = Mathf.Clamp(resource, 0, _maxResource);
+        _resourceUI.text = resource.ToString();
     }
 }

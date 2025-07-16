@@ -25,8 +25,6 @@ public class PlayerMovement : MonoBehaviour
         if(InputManager.inputDirection.magnitude != 0)
         {
 
-            Debug.Log("Move Input");
-
             RotateToInput();
 
             Vector3 movement = _rb.rotation * Vector3.forward * _moveSpeed * Time.fixedDeltaTime;

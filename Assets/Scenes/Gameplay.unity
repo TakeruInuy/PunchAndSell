@@ -2999,11 +2999,54 @@ MonoBehaviour:
       m_Calls: []
   enemiesCollected: []
   _enemyOnBackDepthOffset: 1
-  _enemyOnBackHeightOffset: 1
+  _enemyOnBackHeightOffset: 2
   _startingEnemiesCollectedCapacity: 2
+  _collectedEnemiesBaseFollowSpeed: 10
+  _collectedEnemyFollowCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -21.048618
+      outSlope: -21.048618
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.10566629
+    - serializedVersion: 3
+      time: 0.05334845
+      value: 0.22760479
+      inSlope: -6.921524
+      outSlope: -6.921524
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.24183518
+    - serializedVersion: 3
+      time: 0.14238963
+      value: -0.09880097
+      inSlope: -0.50555885
+      outSlope: -0.50555885
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.41548547
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.99299765
+      value: -0.18033195
+      inSlope: -0.04578822
+      outSlope: -0.04578822
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.11961637
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   maxEnemiesCapacity: 0
-  upgradeCapacityIncrease: 1
-  upgradeCost: 1
+  _upgradeCapacityIncrease: 1
+  _upgradeCost: 1
 --- !u!114 &1492496688
 MonoBehaviour:
   m_ObjectHideFlags: 0

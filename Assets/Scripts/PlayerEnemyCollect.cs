@@ -12,11 +12,21 @@ public class PlayerEnemyCollect : PlayerInteraction
     [SerializeField] private float _enemyOnBackDepthOffset = 1f;
     [SerializeField] private float _enemyOnBackHeightOffset = 1f;
     [SerializeField] private int _startingEnemiesCollectedCapacity = 2;
-    [HideInInspector] public int maxEnemiesCapacity;
+    private Transform _collectedEnemiesFollowTarget;
+    [SerializeField] private float _collectedEnemiesBaseFollowSpeed = 20f;
+    [SerializeField] private AnimationCurve _collectedEnemyFollowCurve;
+
 
     [Header("Upgrades")]
-    [SerializeField] private int upgradeCapacityIncrease = 1;
-    [SerializeField] private int upgradeCost = 1;
+    [HideInInspector] public int maxEnemiesCapacity;
+    [SerializeField] private int _upgradeCapacityIncrease = 1;
+    [SerializeField] private int _upgradeCost = 1;
+
+    private void Awake()
+    {
+        GenerateFollowTarget();
+    }
+
 
 
     private void Start()
@@ -30,15 +40,31 @@ public class PlayerEnemyCollect : PlayerInteraction
         Enemy enemy = (Enemy)entity;
         if(enemy && enemiesCollected.Count < maxEnemiesCapacity && !enemiesCollected.Contains(enemy) && enemy.isDead) 
         {
-            enemy.transform.parent = transform;
+            //enemy.transform.parent = transform;
             enemiesCollected.Add(enemy);
-            for (int i = 0; i < enemiesCollected.Count; i++)
-            {
-                var newPos = new Vector3(0, _enemyOnBackHeightOffset * i, -_enemyOnBackDepthOffset);
-                enemiesCollected[i].transform.localPosition = newPos;
-            }
+
+            enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y + _enemyOnBackHeightOffset * enemiesCollected.IndexOf(enemy), enemy.transform.position.z);
+
+            enemy.followTarget.EnableFollow(_collectedEnemiesFollowTarget, _collectedEnemiesBaseFollowSpeed * _collectedEnemyFollowCurve.Evaluate(enemiesCollected.IndexOf(enemy) / 100f));
+
+
+            //for (int i = 0; i < enemiesCollected.Count; i++)
+            //{
+
+
+            //    //var newPos = new Vector3(0, _enemyOnBackHeightOffset * i, -_enemyOnBackDepthOffset);
+            //    //enemiesCollected[i].transform.localPosition = newPos;
+            //}
             base.DoAction(entity);
         }       
+    }
+
+    private void GenerateFollowTarget()
+    {
+        _collectedEnemiesFollowTarget = new GameObject().transform;
+        _collectedEnemiesFollowTarget.parent = transform;
+        _collectedEnemiesFollowTarget.name = "Follow Target";
+        _collectedEnemiesFollowTarget.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - _enemyOnBackDepthOffset);
     }
 
     public void ClearEnemies()
@@ -55,10 +81,10 @@ public class PlayerEnemyCollect : PlayerInteraction
 
     public void IncreaseCapacity()
     {
-        if (ResourceManager.Instance.resource >= upgradeCost)
+        if (ResourceManager.Instance.resource >= _upgradeCost)
         {
-            maxEnemiesCapacity += upgradeCapacityIncrease;
-            ResourceManager.Instance.RemoveResource(upgradeCost);
+            maxEnemiesCapacity += _upgradeCapacityIncrease;
+            ResourceManager.Instance.RemoveResource(_upgradeCost);
         }
         
     }

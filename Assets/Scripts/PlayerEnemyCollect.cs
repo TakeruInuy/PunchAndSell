@@ -9,15 +9,19 @@ public class PlayerEnemyCollect : PlayerInteraction
     public List<Enemy> enemiesCollected;
 
     [Header("Enemy Collection Attributes")]
-    [SerializeField] private float enemyOnBackDepthOffset = 1f;
-    [SerializeField] private float enemyOnBackHeightOffset = 1f;
-    [SerializeField] private int startingEnemiesCollectedCapacity = 2;
+    [SerializeField] private float _enemyOnBackDepthOffset = 1f;
+    [SerializeField] private float _enemyOnBackHeightOffset = 1f;
+    [SerializeField] private int _startingEnemiesCollectedCapacity = 2;
     [HideInInspector] public int maxEnemiesCapacity;
+
+    [Header("Upgrades")]
+    [SerializeField] private int upgradeCapacityIncrease = 1;
+    [SerializeField] private int upgradeCost = 1;
 
 
     private void Start()
     {
-        maxEnemiesCapacity = startingEnemiesCollectedCapacity;
+        maxEnemiesCapacity = _startingEnemiesCollectedCapacity;
         enemiesCollected = new List<Enemy>();
     }
 
@@ -30,7 +34,7 @@ public class PlayerEnemyCollect : PlayerInteraction
             enemiesCollected.Add(enemy);
             for (int i = 0; i < enemiesCollected.Count; i++)
             {
-                var newPos = new Vector3(0, enemyOnBackHeightOffset * i, -enemyOnBackDepthOffset);
+                var newPos = new Vector3(0, _enemyOnBackHeightOffset * i, -_enemyOnBackDepthOffset);
                 enemiesCollected[i].transform.localPosition = newPos;
             }
             base.DoAction(entity);
@@ -47,5 +51,15 @@ public class PlayerEnemyCollect : PlayerInteraction
         int enemiesCleared = enemiesCollected.Count;
         ResourceManager.Instance.AddResource(enemiesCleared);
         enemiesCollected.Clear();        
+    }
+
+    public void IncreaseCapacity()
+    {
+        if (ResourceManager.Instance.resource >= upgradeCost)
+        {
+            maxEnemiesCapacity += upgradeCapacityIncrease;
+            ResourceManager.Instance.RemoveResource(upgradeCost);
+        }
+        
     }
 }

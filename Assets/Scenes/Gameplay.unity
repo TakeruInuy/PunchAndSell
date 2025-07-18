@@ -2299,10 +2299,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7621615569130754181, guid: 80facbb5a568f3243b0c4ef1bf3ded9a, type: 3}
-      propertyPath: ragdollOnEnable
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

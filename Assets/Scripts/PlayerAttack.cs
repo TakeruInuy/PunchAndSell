@@ -28,6 +28,7 @@ public class PlayerAttack : PlayerInteraction
         if (_enemyAttacked && !_enemyAttacked.isDead)
         {
             _enemyAttacked.TakeDamage(_attackDamage);
+            _enemyAttacked = null;
         }
     }
 }

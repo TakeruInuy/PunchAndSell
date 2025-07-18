@@ -8,7 +8,7 @@ public class Shop : MonoBehaviour
 {
     
     private Dictionary<string, ShopItem> shopItems;
-    [SerializeField] private MeshRenderer _playerMesh;
+    [SerializeField] private Renderer[] _playerMeshes;
 
     [Header("UI")]
     [SerializeField] private RectTransform _shopPanel;
@@ -70,6 +70,10 @@ public class Shop : MonoBehaviour
 
     private void EquipItem(string item)
     {
-        _playerMesh.material = shopItems[item].material;
+        foreach(var mesh in _playerMeshes) 
+        {
+            mesh.material = shopItems[item].material;
+        } 
+        
     }
 }

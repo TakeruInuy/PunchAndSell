@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     public UnityEvent onMovement;
     public UnityEvent onStop;
 
+    [SerializeField]private SoundManager _soundManager;
+
 
 
 
@@ -48,5 +50,11 @@ public class PlayerMovement : MonoBehaviour
         Quaternion newRotation = Quaternion.RotateTowards(_rb.rotation, targetRotation, _turnSpeed * Time.fixedDeltaTime); //smooths rotation based on turn speed
 
         _rb.MoveRotation(newRotation);
+    }
+
+
+    private void PlayStepSound()
+    {
+        _soundManager.PlayAudio("Footstep");
     }
 }

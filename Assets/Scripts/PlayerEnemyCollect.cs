@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEngine.EventSystems.EventTrigger;
 
 public class PlayerEnemyCollect : PlayerInteraction
@@ -22,6 +23,8 @@ public class PlayerEnemyCollect : PlayerInteraction
     [HideInInspector] public int maxEnemiesCapacity;
     [SerializeField] private int _upgradeCapacityIncrease = 1;
     [SerializeField] private int _upgradeCost = 1;
+
+    public UnityEvent onClear;
 
     private void Awake()
     {
@@ -100,15 +103,21 @@ public class PlayerEnemyCollect : PlayerInteraction
     }
 
     public void ClearEnemies()
-    {        
-        foreach (var enemy in enemiesCollected)
+    {
+
+        if (enemiesCollected.Count > 0)
         {
-            _resourcesToAdd += enemy.resourceDropped;
-            enemy.gameObject.SetActive(false);
-        }        
-        ResourceManager.Instance.AddResource(_resourcesToAdd);
-        enemiesCollected.Clear();        
-        _resourcesToAdd = 0;
+            foreach (var enemy in enemiesCollected)
+            {
+                _resourcesToAdd += enemy.resourceDropped;
+                enemy.gameObject.SetActive(false);
+            }
+            ResourceManager.Instance.AddResource(_resourcesToAdd);
+            enemiesCollected.Clear();
+            _resourcesToAdd = 0;
+            onClear.Invoke();
+        }
+
     }
 
     public void IncreaseCapacity()

@@ -1,14 +1,21 @@
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Enemy : Entity
 {
 
 
-    [SerializeField] private int _hitPoints = 1;
+    [SerializeField] private int _baseHitPoints = 2;
+    private int _currentHitPoints;
+    [SerializeField] private Image _hpBar;
     public int resourceDropped = 2;
     public bool isDead = false;
     //[HideInInspector]public FollowTarget followTarget;
     [HideInInspector] public InertiaFollowTarget followTarget;
+
+    public UnityEvent onDamageTaken;
+    public UnityEvent onDeath;
 
 
 
@@ -16,18 +23,22 @@ public class Enemy : Entity
     private void Awake()
     {
         followTarget = GetComponent<InertiaFollowTarget>();
+        _currentHitPoints = _baseHitPoints;
+        onDamageTaken.AddListener(UpdateHPBar);
     }
 
     private void OnEnable()
     {
         followTarget.DisableFollow();
+        _currentHitPoints = _baseHitPoints;
     }
 
     public void TakeDamage(int damageToTake)
     {
-        
-        _hitPoints -= damageToTake;
-        if (_hitPoints <= 0)
+
+        _currentHitPoints -= damageToTake;
+        onDamageTaken.Invoke();
+        if (_currentHitPoints <= 0)
         {
             Die();
         }       
@@ -38,6 +49,12 @@ public class Enemy : Entity
         if(!isDead)
         {
             isDead = true;
+            onDeath.Invoke();
         }        
-    }    
+    }
+
+    public void UpdateHPBar()
+    {
+        _hpBar.fillAmount = _currentHitPoints/ (float)_baseHitPoints;
+    }
 }

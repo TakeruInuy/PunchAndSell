@@ -68,7 +68,6 @@ public class FollowTarget : MonoBehaviour
     {
         if(isRotating) 
         {
-
             if(_targetToRotate)
             {
                 var upDir = -(_targetToRotate.position - _rb.position).normalized;
@@ -80,7 +79,6 @@ public class FollowTarget : MonoBehaviour
                 Quaternion finalRot = Quaternion.Euler(euler);
 
                 _rb.MoveRotation(finalRot);
-
             }
             else
             {

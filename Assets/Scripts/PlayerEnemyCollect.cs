@@ -71,7 +71,12 @@ public class PlayerEnemyCollect : PlayerInteraction
             enemy.transform.position.z);
         if (enemiesCollected.IndexOf(enemy) == 0 ) //Checks if is first enemy
         {
-            enemy.followTarget.EnableFollow(GetComponent<Rigidbody>(), _collectedEnemiesFollowTarget, 1f, _enemyOnBackDepthOffset, _collectedEnemiesBaseStiffness, _collectedEnemiesBaseDamper);
+            enemy.followTarget.EnableFollow(GetComponent<Rigidbody>(), 
+                _collectedEnemiesFollowTarget, 
+                _enemyOnBackHeightOffset, 
+                _enemyOnBackDepthOffset, 
+                _collectedEnemiesBaseStiffness, 
+                _collectedEnemiesBaseDamper);
         }
         else
         {
@@ -91,7 +96,7 @@ public class PlayerEnemyCollect : PlayerInteraction
         _collectedEnemiesFollowTarget = new GameObject().transform;
         _collectedEnemiesFollowTarget.parent = transform;
         _collectedEnemiesFollowTarget.name = "Follow Target";
-        _collectedEnemiesFollowTarget.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - _enemyOnBackDepthOffset);
+        _collectedEnemiesFollowTarget.position = new Vector3(transform.position.x, transform.position.y - _enemyOnBackHeightOffset, transform.position.z - _enemyOnBackDepthOffset);
     }
 
     public void ClearEnemies()

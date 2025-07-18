@@ -34,7 +34,10 @@ public class InertiaFollowTarget : MonoBehaviour
 
             _rb.AddForce(springForce + dampingForce);
 
-            _rb.MoveRotation(_targetToLook.rotation);
+            Quaternion targetRotation = Quaternion.FromToRotation(Vector3.down, (_targetToLook.position - transform.position).normalized);
+
+            //targetRotation.y = _targetToLook.rotation.y;
+            _rb.MoveRotation(targetRotation);            
             
         }
     }

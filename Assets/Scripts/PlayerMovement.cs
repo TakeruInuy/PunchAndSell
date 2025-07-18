@@ -1,21 +1,29 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {
     private Rigidbody _rb;
+    private Animator _animator;
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _turnSpeed = 720f;
+    public bool isMoving;
+    public UnityEvent onMovement;
+    public UnityEvent onStop;
+
 
 
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _animator = GetComponent<Animator>();
     }
 
 
     void FixedUpdate()
     {
+        
         if(InputManager.inputDirection.magnitude != 0)
         {
 
@@ -23,7 +31,15 @@ public class PlayerMovement : MonoBehaviour
 
             Vector3 movement = _rb.rotation * Vector3.forward * _moveSpeed * Time.fixedDeltaTime;
             _rb.MovePosition(_rb.position + movement); //moves forward
+            isMoving = true;
+            onMovement.Invoke();
         }
+        else
+        {
+            isMoving = false;
+            onStop.Invoke();
+        }
+        _animator.SetBool("isRunning", isMoving);
     }
 
     private void RotateToInput()

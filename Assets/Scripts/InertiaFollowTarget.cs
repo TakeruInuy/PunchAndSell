@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class InertiaFollowTarget : MonoBehaviour
 {
-    [SerializeField] private Rigidbody _bottomTarget;
-    [SerializeField] private Transform _targetToLook;
-    [SerializeField] private float _height = 2f;
-    [SerializeField] private float _depth = 4f;
+    private Rigidbody _bottomTarget;
+    private Transform _targetToLook;
+    private float _height = 2f;
+    private float _depth = 4f;
     public bool isFollowing;
 
     [Header("Physics Parameters")]
-    [SerializeField] private float _stiffness = 1000f;
-    [SerializeField] private float _damper = 50f;
+    private float _stiffness = 1000f;
+    private float _damper = 50f;
 
     private Rigidbody _rb;
 

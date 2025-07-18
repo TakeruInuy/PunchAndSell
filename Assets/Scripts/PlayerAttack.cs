@@ -16,7 +16,7 @@ public class PlayerAttack : PlayerInteraction
         if (!enemy.isDead)
         {
             _enemyAttacked = (Enemy)entity;
-            if (_enemyAttacked && !_enemyAttacked.isDead)
+            if (_enemyAttacked)
                 base.DoAction(entity);
         }
 

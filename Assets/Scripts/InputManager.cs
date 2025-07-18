@@ -20,5 +20,6 @@ public class InputManager : MonoBehaviour
     {
         inputDirection.x = _moveAction.ReadValue<Vector2>().x;
         inputDirection.z = _moveAction.ReadValue<Vector2>().y;
+        Debug.Log(inputDirection);
     }
 }

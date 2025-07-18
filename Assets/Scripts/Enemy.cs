@@ -5,15 +5,17 @@ public class Enemy : Entity
 
 
     [SerializeField] private int _hitPoints = 1;
+    public int resourceDropped = 2;
     public bool isDead = false;
-    [HideInInspector]public FollowTarget followTarget;
+    //[HideInInspector]public FollowTarget followTarget;
+    [HideInInspector] public InertiaFollowTarget followTarget;
 
 
 
 
     private void Awake()
     {
-        followTarget = GetComponent<FollowTarget>();
+        followTarget = GetComponent<InertiaFollowTarget>();
     }
 
     private void OnEnable()

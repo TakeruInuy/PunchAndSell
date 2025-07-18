@@ -5,7 +5,7 @@ using static UnityEngine.EventSystems.EventTrigger;
 
 public class PlayerEnemyCollect : PlayerInteraction
 {
-
+    private int _resourcesToAdd;
     public List<Enemy> enemiesCollected;
 
     [Header("Enemy Collection Attributes")]
@@ -13,7 +13,8 @@ public class PlayerEnemyCollect : PlayerInteraction
     [SerializeField] private float _enemyOnBackHeightOffset = 1f;
     [SerializeField] private int _startingEnemiesCollectedCapacity = 2;
     private Transform _collectedEnemiesFollowTarget;
-    [SerializeField] private float _collectedEnemiesBaseFollowSpeed = 20f;
+    [SerializeField] private float _collectedEnemiesBaseStiffness = 1000f;
+    [SerializeField] private float _collectedEnemiesBaseDamper = 50f;
     [SerializeField] private AnimationCurve _collectedEnemyFollowCurve;
 
 
@@ -38,25 +39,51 @@ public class PlayerEnemyCollect : PlayerInteraction
     protected override void DoAction(Entity entity)
     {        
         Enemy enemy = (Enemy)entity;
-        if(enemy && enemiesCollected.Count < maxEnemiesCapacity && !enemiesCollected.Contains(enemy) && enemy.isDead) 
+        if(enemy && enemiesCollected.Count < maxEnemiesCapacity && !enemiesCollected.Contains(enemy) && enemy.isDead)
         {
-            //enemy.transform.parent = transform;
+
             enemiesCollected.Add(enemy);
 
-            enemy.transform.position = new Vector3(enemy.transform.position.x, enemy.transform.position.y + _enemyOnBackHeightOffset * enemiesCollected.IndexOf(enemy), enemy.transform.position.z);
+            SetupCollectedEnemyFollow(enemy);
 
-            enemy.followTarget.EnableFollow(_collectedEnemiesFollowTarget, _collectedEnemiesBaseFollowSpeed * _collectedEnemyFollowCurve.Evaluate(enemiesCollected.IndexOf(enemy) / 100f));
+            //SetupCollectedEnemyRotation(enemy);
 
-
-            //for (int i = 0; i < enemiesCollected.Count; i++)
-            //{
-
-
-            //    //var newPos = new Vector3(0, _enemyOnBackHeightOffset * i, -_enemyOnBackDepthOffset);
-            //    //enemiesCollected[i].transform.localPosition = newPos;
-            //}
             base.DoAction(entity);
-        }       
+        }
+    }
+
+    //private void SetupCollectedEnemyRotation(Enemy enemy)
+    //{
+    //    if (enemiesCollected.IndexOf(enemy) > 0)
+    //    {
+    //        enemy.followTarget.EnableRotation(enemiesCollected[enemiesCollected.IndexOf(enemy) - 1].transform, transform);
+    //    }
+    //    else
+    //    {
+    //        enemy.followTarget.EnableRotation(null, transform);
+    //    }
+    //}
+
+    private void SetupCollectedEnemyFollow(Enemy enemy)
+    {
+        enemy.transform.position = new Vector3(enemy.transform.position.x,
+            enemy.transform.position.y + _enemyOnBackHeightOffset * enemiesCollected.IndexOf(enemy),
+            enemy.transform.position.z);
+        if (enemiesCollected.IndexOf(enemy) == 0 ) //Checks if is first enemy
+        {
+            enemy.followTarget.EnableFollow(GetComponent<Rigidbody>(), _collectedEnemiesFollowTarget, 1f, _enemyOnBackDepthOffset, _collectedEnemiesBaseStiffness, _collectedEnemiesBaseDamper);
+        }
+        else
+        {
+            enemy.followTarget.EnableFollow(enemiesCollected[enemiesCollected.IndexOf(enemy) - 1].GetComponent<Rigidbody>(), //Rigidbody of enemy on bottom
+                enemiesCollected[enemiesCollected.IndexOf(enemy) - 1].transform, //transform of bottom enemy
+                _enemyOnBackHeightOffset,
+                0,
+                _collectedEnemiesBaseStiffness * _collectedEnemyFollowCurve.Evaluate(enemiesCollected.IndexOf(enemy) / 50f), //stiffness considering position on the enemy pile
+                _collectedEnemiesBaseDamper * _collectedEnemyFollowCurve.Evaluate(enemiesCollected.IndexOf(enemy) / 100f)); //damp considering position on the enemy pile
+        }
+
+        //enemy.followTarget.EnableFollow(_collectedEnemiesFollowTarget, _collectedEnemiesBaseFollowSpeed * _collectedEnemyFollowCurve.Evaluate(enemiesCollected.IndexOf(enemy) / 100f));
     }
 
     private void GenerateFollowTarget()
@@ -68,15 +95,15 @@ public class PlayerEnemyCollect : PlayerInteraction
     }
 
     public void ClearEnemies()
-    {
+    {        
         foreach (var enemy in enemiesCollected)
         {
-            enemy.transform.parent = null;
+            _resourcesToAdd += enemy.resourceDropped;
             enemy.gameObject.SetActive(false);
-        }
-        int enemiesCleared = enemiesCollected.Count;
-        ResourceManager.Instance.AddResource(enemiesCleared);
+        }        
+        ResourceManager.Instance.AddResource(_resourcesToAdd);
         enemiesCollected.Clear();        
+        _resourcesToAdd = 0;
     }
 
     public void IncreaseCapacity()
